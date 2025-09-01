@@ -4,9 +4,10 @@ import fetch from "node-fetch";
 const app = express();
 app.use(express.json());
 
-const HF_TOKEN = process.env.HF_TOKEN; // Hugging Face Token को env var में रखेंगे
+const HF_TOKEN = process.env.HF_TOKEN; // Hugging Face Token Vercel की env settings में डालना होगा
 
-app.post("/generate", async (req, res) => {
+// 🖼️ AI Image Generate API
+app.post("/api/generate", async (req, res) => {
   try {
     const prompt = req.body.prompt || "A futuristic city at sunset";
 
@@ -35,4 +36,5 @@ app.post("/generate", async (req, res) => {
   }
 });
 
+// ✅ Vercel automatic port handle karega
 app.listen(3000, () => console.log("✅ Proxy server running on port 3000"));
