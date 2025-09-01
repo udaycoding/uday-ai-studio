@@ -1,256 +1,88 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Uday AI Studio — Create Images & Short Videos from Text</title>
-  <meta name="description" content="Uday AI Studio — Generate cinematic images and short videos from text prompts. Fast demo powered by Hugging Face Spaces. No coding needed." />
-  <meta property="og:title" content="Uday AI Studio" />
-  <meta property="og:description" content="Generate cinematic images and short videos from text prompts. Try the live demo embedded from Hugging Face Spaces." />
-  <meta property="og:image" content="/og-image.png" />
-  <meta name="theme-color" content="#0f1724" />
-
-  <!-- Google Font (system fallback safe) -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uday AI Studio</title>
   <style>
-    :root{
-      --bg:#071026; --card:#0b1220; --muted:#94a3b8; --accent1:#7c3aed; --accent2:#06b6d4; --glass: rgba(255,255,255,0.04); --max-width:1240px; --radius:14px;
-      color-scheme: dark; --shadow: 0 6px 30px rgba(5,8,15,0.7);
+    body {
+      background: #0f0f0f;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;background:linear-gradient(180deg,#071026 0%, #04101a 60%); color:#e6eef8; -webkit-font-smoothing:antialiased;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
-    .container{max-width:var(--max-width);margin:0 auto;padding:28px}
-
-    /* Header */
-    header{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
-    .brand{display:flex;gap:14px;align-items:center}
-    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:18px;box-shadow:var(--shadow)}
-    .title-wrap h1{font-size:20px;margin:0}
-    .title-wrap p{margin:2px 0 0;color:var(--muted);font-size:14px}
-
-    nav{display:flex;gap:12px;align-items:center}
-    .nav-link{color:var(--muted);padding:8px 12px;border-radius:10px;text-decoration:none}
-    .nav-link:hover{color:white}
-
-    /* Hero */
-    .hero{display:grid;grid-template-columns:1fr 520px;gap:28px;align-items:start;margin-top:18px}
-    .hero-left{padding:22px;border-radius:var(--radius);background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid rgba(255,255,255,0.03)}
-    .kicker{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.03);color:var(--muted);font-weight:700;margin-bottom:12px}
-    h2{margin:0 0 8px;font-size:28px}
-    p.lead{color:var(--muted);margin:0 0 14px}
-
-    .cta{display:flex;gap:12px;margin-top:16px}
-    .btn{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:white;padding:12px 16px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
-    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
-
-    .controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-    .controls input, .controls select{padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
-
-    /* Demo panel */
-    .panel{border-radius:var(--radius);overflow:hidden;border:1px solid rgba(255,255,255,0.03);box-shadow:var(--shadow);background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
-    .embed{width:100%;height:560px;border:0;display:block}
-
-    /* Features */
-    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
-    .feature{padding:16px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03)}
-    .feature h4{margin:0 0 8px}
-    .muted{color:var(--muted);font-size:14px}
-
-    /* Testimonials */
-    .testimonials{display:flex;gap:12px;margin-top:22px;overflow:auto;padding-bottom:8px}
-    .testimonial{min-width:260px;padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);border:1px solid rgba(255,255,255,0.03)}
-
-    /* Pricing */
-    .pricing{display:flex;gap:14px;margin-top:22px}
-    .price-card{flex:1;padding:16px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);border:1px solid rgba(255,255,255,0.03)}
-    .price-label{font-size:12px;color:var(--muted);font-weight:700}
-    .price-num{font-size:28px;font-weight:800;margin-top:8px}
-
-    /* Footer */
-    footer{margin-top:36px;padding:18px 0;color:var(--muted);text-align:center}
-
-    /* small responsive tweaks */
-    @media (max-width:1000px){.hero{grid-template-columns:1fr;}.embed{height:420px}} 
-    @media (max-width:700px){.features{grid-template-columns:1fr}.controls{grid-template-columns:1fr}.title-wrap h1{font-size:18px}}
-
-    /* subtle animations */
-    .float{animation:floaty 6s ease-in-out infinite}
-    @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
-
-    /* utility */
-    .row{display:flex;gap:12px;align-items:center}
-    .center{display:flex;align-items:center;justify-content:center}
-
-    /* tiny accessibility focus */
-    a:focus, button:focus, input:focus{outline:2px solid rgba(124,58,237,0.35);outline-offset:2px}
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+    }
+    input {
+      width: 60%;
+    }
+    button {
+      background: #00ffe5;
+      color: black;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      transform: scale(1.05);
+    }
+    img {
+      margin-top: 20px;
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="brand">
-        <div class="logo">UA</div>
-        <div class="title-wrap">
-          <h1>Uday AI Studio</h1>
-          <p class="muted">Text → Image → Short Video • No code demo</p>
-        </div>
-      </div>
-      <nav>
-        <a class="nav-link" href="#how">How it works</a>
-        <a class="nav-link" href="#pricing">Pricing</a>
-        <a class="nav-link" href="#demo">Demo</a>
-        <a class="nav-link" href="#contact">Contact</a>
-        <a class="nav-link" href="#" onclick="document.getElementById('demoFrame').scrollIntoView({behavior:'smooth'})">Open Demo</a>
-      </nav>
-    </header>
 
-    <main>
-      <section class="hero">
-        <div>
-          <div class="hero-left">
-            <span class="kicker">Instant AI Studio</span>
-            <h2>Create cinematic images & short clips from text</h2>
-            <p class="lead">Type a prompt, tune a few settings and generate downloadable MP4s — perfect for social reels, thumbnails and concept art. Try the free demo on the right.</p>
+  <h1>🚀 Uday AI Studio</h1>
+  <p>Prompt likho aur AI Image generate karo:</p>
 
-            <div class="controls">
-              <input id="prompt" type="text" placeholder="e.g. A cinematic sunrise over a futuristic city, ultra-detailed, 35mm lens" />
-              <select id="preset"><option value="cinematic">Cinematic</option><option value="cartoon">Cartoon</option><option value="photoreal">Photoreal</option></select>
-              <input id="steps" type="text" placeholder="Steps (24)" value="24" />
-              <select id="ratio"><option value="1:1">1:1</option><option value="9:16">9:16 (Reels)</option><option value="16:9">16:9</option></select>
-            </div>
+  <input type="text" id="prompt" placeholder="Enter your prompt..." />
+  <button onclick="runAI()">Generate Image</button>
 
-            <div class="cta">
-              <button class="btn" onclick="openDemoWithParams()">Run Demo — Generate</button>
-              <button class="btn secondary" onclick="savePrompt()">Save Prompt</button>
-            </div>
-
-            <div class="features" aria-hidden="false">
-              <div class="feature">
-                <h4>Fast Demos</h4>
-                <p class="muted">Small, optimized runs for quick previews.</p>
-              </div>
-              <div class="feature">
-                <h4>Templates</h4>
-                <p class="muted">Built-in presets for reels, cinematic & thumbnails.</p>
-              </div>
-              <div class="feature">
-                <h4>Download MP4</h4>
-                <p class="muted">Frames stitched into MP4 for easy sharing.</p>
-              </div>
-            </div>
-
-            <div class="testimonials">
-              <div class="testimonial">
-                <strong>"Amazing for quick reels"</strong>
-                <p class="muted">— Rohit, Content Creator</p>
-              </div>
-              <div class="testimonial">
-                <strong>"Super easy, great presets"</strong>
-                <p class="muted">— Anika, Social Manager</p>
-              </div>
-              <div class="testimonial">
-                <strong>"Saved me hours of editing"</strong>
-                <p class="muted">— Suresh, Filmmaker</p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-       <div id="demo" class="panel">
-         <iframe id="demoFrame" class="embed" src="https://uday-ai.hf.space?__theme=light"allow="microphone; camera; autoplay; clipboard-write; encrypted-media; picture-in-picture;"></iframe>
-        </div>
-      </section>
-
-      <section id="how" style="margin-top:28px">
-        <div class="panel" style="padding:18px">
-          <h3 style="margin-top:0">How it works</h3>
-          <ol class="muted">
-            <li>We generate multiple images for your prompt using a text-to-image model.</li>
-            <li>Each image is animated with subtle Ken Burns (zoom/pan) frames.</li>
-            <li>The frames are stitched into a short MP4 and presented for download.</li>
-          </ol>
-        </div>
-      </section>
-
-      <section id="pricing" style="margin-top:18px">
-        <h3 style="margin-bottom:8px">Plans</h3>
-        <div class="pricing">
-          <div class="price-card">
-            <div class="price-label">Free</div>
-            <div class="price-num">Demo</div>
-            <p class="muted">Limited runs/day • Good for learning</p>
-            <div style="margin-top:12px"><button class="btn" onclick="document.getElementById('demoFrame').scrollIntoView({behavior:'smooth'})">Try Demo</button></div>
-          </div>
-          <div class="price-card">
-            <div class="price-label">Pro (Coming soon)</div>
-            <div class="price-num">Priority</div>
-            <p class="muted">More runs • Higher resolution • Private projects</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="contact" style="margin-top:18px">
-        <div class="panel" style="padding:18px;display:flex;gap:16px;flex-wrap:wrap;align-items:center">
-          <div style="flex:1;min-width:260px">
-            <h3 style="margin-top:0">Get in touch</h3>
-            <p class="muted">Questions? Feedback? Partnerships? Send a message.</p>
-            <!-- Simple form that posts to Formspree (replace with your endpoint) -->
-            <form action="https://formspree.io/f/your-form-id" method="POST">
-              <input type="text" name="name" placeholder="Your name" required style="width:100%;padding:10px;margin-bottom:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit" />
-              <input type="email" name="email" placeholder="Email" required style="width:100%;padding:10px;margin-bottom:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit" />
-              <textarea name="message" placeholder="Message" rows="4" required style="width:100%;padding:10px;margin-bottom:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit"></textarea>
-              <button class="btn" type="submit">Send Message</button>
-            </form>
-          </div>
-          <div style="flex:1;min-width:260px;text-align:center">
-            <h4 style="margin-top:0">Follow</h4>
-            <p class="muted">Share your creations: <br> Twitter • Instagram • YouTube</p>
-          </div>
-        </div>
-      </section>
-
-    </main>
-
-    <footer>
-      <div class="muted">© 2025 Uday AI Studio • Built with Hugging Face Spaces • <a href="#" style="color:var(--muted);text-decoration:underline">Privacy</a> • <a href="#" style="color:var(--muted);text-decoration:underline">Terms</a></div>
-    </footer>
-
-  </div>
+  <br>
+  <img id="output" alt="AI Generated Image" />
 
   <script>
-    // Small helpers to interact with the iframe-based Space
-    function savePrompt(){
-      const p = document.getElementById('prompt').value;
-      if(!p){alert('Enter a prompt first'); return}
-      navigator.clipboard.writeText(p).then(()=>alert('Prompt copied'));
+    async function runAI() {
+      const prompt = document.getElementById("prompt").value || "A cinematic sunrise over a futuristic city";
+
+      const API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-3.5-large";
+      const HF_TOKEN = "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"; // 🔑 apna token daalo
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${HF_TOKEN}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            inputs: prompt,
+            options: { wait_for_model: true }
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`❌ API Error: ${response.status} ${response.statusText}`);
+        }
+
+        const result = await response.blob();
+        const imgUrl = URL.createObjectURL(result);
+        document.getElementById("output").src = imgUrl;
+      } catch (err) {
+        console.error(err);
+        alert("⚠️ Image generate karne me problem aayi!");
+      }
     }
-
-    function openDemoWithParams(){
-      const prompt = encodeURIComponent(document.getElementById('prompt').value || 'A cinematic sunrise over a futuristic city');
-      const steps = encodeURIComponent(document.getElementById('steps').value || '24');
-      const preset = encodeURIComponent(document.getElementById('preset').value || 'cinematic');
-      const ratio = encodeURIComponent(document.getElementById('ratio').value || '1:1');
-      const runs =  document.getElementById('runs') ? document.getElementById('runs').value : '';
-      // Construct query string for Spaces (your Space must read query params if implemented)
-      const qs = `prompt=${prompt}&steps=${steps}&preset=${preset}&ratio=${ratio}`;
-      const base = 'https://uday-ai.hf.space';
-      document.getElementById('demoFrame').src = base + '/?'+qs + '&__theme=light';
-      document.getElementById('demoFrame').focus();
-      document.getElementById('demo').scrollIntoView({behavior:'smooth'});
-    }
-
-    // Smooth preload animation for iframe (show a blurred preview until iframe loads)
-    const iframe = document.getElementById('demoFrame');
-    iframe.style.opacity = 0; iframe.style.transition = 'opacity 600ms ease-in-out';
-    iframe.addEventListener('load', ()=>{ iframe.style.opacity = 1; });
-
-    // Optional: lazy-load iframe after user interacts
-    let iframeLoaded = true; // already loaded by default; if you want lazy set to false and handle
   </script>
+
 </body>
 </html>
