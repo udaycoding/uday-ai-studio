@@ -1,3 +1,4 @@
+<script>
 // 🌐 Smooth Scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener("click", function(e) {
@@ -28,3 +29,21 @@ const appearOnScroll = new IntersectionObserver((entries, observer) => {
 faders.forEach(fader => {
   appearOnScroll.observe(fader);
 });
+
+// 🌐 Demo Button → Update iframe with params
+function openDemoWithParams(){
+  const prompt = encodeURIComponent(document.getElementById('prompt').value || 'A cinematic sunrise over a futuristic city');
+  const steps = encodeURIComponent(document.getElementById('steps').value || '24');
+  const preset = encodeURIComponent(document.getElementById('preset').value || 'cinematic');
+  const ratio = encodeURIComponent(document.getElementById('ratio').value || '1:1');
+
+  const qs = prompt=${prompt}&steps=${steps}&preset=${preset}&ratio=${ratio};
+  
+  // ✅ Same Space URL as iframe
+  const base = 'https://huggingface.co/spaces/udaydolare9/uday-text2video';
+  
+  document.getElementById('demoFrame').src = base + '?embed=true&' + qs;
+  document.getElementById('demoFrame').focus();
+  document.getElementById('demo').scrollIntoView({behavior:'smooth'});
+}
+</script>
