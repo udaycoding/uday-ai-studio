@@ -2,14 +2,13 @@
 async function runAI() {
   const prompt = document.getElementById("prompt").value || "A futuristic city skyline at sunset";
 
-  const API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2";
-  const HF_TOKEN = "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"; // 👉 apna token paste karo
+  // ✅ Correct Proxy URL (with https)
+  const API_URL = "https://ai-proxy-backend-one.vercel.app/api/generate";
 
   try {
     const response = await fetch(API_URL, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${HF_TOKEN}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
