@@ -40,7 +40,7 @@ function openDemoWithParams(){
   const qs = prompt=${prompt}&steps=${steps}&preset=${preset}&ratio=${ratio};
   
   // ✅ Same Space URL as iframe
-  const base = 'https://huggingface.co/spaces/udaydolare9/uday-text2video';
+  const base = 'https://uday-ai.hf.space';
   
   document.getElementById('demoFrame').src = base + '?embed=true&' + qs;
   document.getElementById('demoFrame').focus();
