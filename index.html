@@ -113,8 +113,8 @@
     async function runAI() {
       const prompt = document.getElementById("prompt").value || "A cinematic sunrise over a futuristic city";
 
-      const API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-3.5-large";
-      const HF_TOKEN = "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"; // 🔑 apna token daalo
+      const API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2";
+      const HF_TOKEN = "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"; // 🔑 apna token daalo
 
       try {
         const response = await fetch(API_URL, {
