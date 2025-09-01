@@ -37,6 +37,7 @@ function openDemoWithParams(){
   const preset = encodeURIComponent(document.getElementById('preset').value || 'cinematic');
   const ratio = encodeURIComponent(document.getElementById('ratio').value || '1:1');
 
+  // ✅ Fix: use backticks for template string
   const qs = prompt=${prompt}&steps=${steps}&preset=${preset}&ratio=${ratio};
   
   // ✅ Same Space URL as iframe
