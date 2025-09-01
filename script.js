@@ -1,10 +1,9 @@
 <script>
 async function runAI() {
-  const prompt = document.getElementById("prompt").value || "A cinematic sunrise over a futuristic city";
+  const prompt = document.getElementById("prompt").value || "A futuristic city skyline at sunset";
 
-  const API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-3.5-large";
-
-  const HF_TOKEN = "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"; // apna token lagao
+  const API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2";
+  const HF_TOKEN = "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"; // apna Hugging Face token daalo
 
   try {
     const response = await fetch(API_URL, {
@@ -23,9 +22,11 @@ async function runAI() {
       throw new Error(`❌ API Error: ${response.status} ${response.statusText}`);
     }
 
+    // Response me image milegi (binary)
     const result = await response.blob();
     const imgUrl = URL.createObjectURL(result);
     document.getElementById("output").src = imgUrl;
+
   } catch (err) {
     console.error(err);
     alert("⚠️ Image generate karne me problem aayi!");
