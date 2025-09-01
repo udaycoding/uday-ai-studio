@@ -3,7 +3,7 @@ async function runAI() {
   const prompt = document.getElementById("prompt").value || "A futuristic city skyline at sunset";
 
   const API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2";
-  const HF_TOKEN = "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"; // apna Hugging Face token daalo
+  const HF_TOKEN = "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"; // apna Hugging Face token daalo
 
   try {
     const response = await fetch(API_URL, {
